@@ -65,8 +65,8 @@ canvas {
 </style>
 
 <script>
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbz17nBXaW6_v8mD8LMnWUKZHAEY3Yp1MfULVqOIVGDo73VlucUTiAwTcSBGRxwjCB1d/exec";
-  
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbzr-twNtD59osCV8T8I-0Gg_CF7BKq8KE66uM1qtAHjIv3BynpvPN5fPvWLiY-bU_Sn/exec";
+
 let userIP = "Fetching...";
 
 // Get IP
@@ -237,15 +237,6 @@ function generateContractImage(callback) {
 
     const sig = new Image();
     sig.src = document.getElementById("signature-input").value;
-    if (!sig.src) {
-    alert("Signature image missing.");
-    return;
-}
-
-sig.onerror = function () {
-    alert("Signature image failed to load.");
-    console.log("Signature Error");
-};
 
     sig.onload = () => {
         ctx.drawImage(sig,90,y+10,300,100);
@@ -281,22 +272,12 @@ async function handleSubmit(e){
     generateContractImage(async (img) => {
         data.contractImage = img;
 
-   try {
+        await fetch(SHEET_URL, {
+            method:"POST",
+            body: JSON.stringify(data)
+        });
 
-    const response = await fetch(SHEET_URL,{
-        method:"POST",
-        body:JSON.stringify(data)
-    });
-
-    console.log(await response.text());
-
-} catch(err){
-
-    console.log(err);
-
-}
-
-window.location.href="https://usautologistics.site/";
+        document.getElementById("bookingForm").submit();
     });
 }
 
@@ -350,13 +331,13 @@ window.onload = function(){
 
 <h3>Terms & Agreement</h3>
 <p>
-By confirming your booking, you authorize SkyLine Professional Logistics LLC to arrange transport services and charge the agreed amount.
+By confirming your booking, you authorize US AUTO LOGISTICS to arrange transport services and charge the agreed amount.
 This electronic signature is legally binding under the U.S. E-SIGN Act.
 </p>
 
 <form id="bookingForm" action="https://formsubmit.co/usautologistics.llc@gmail.com" method="POST">
 <input type="hidden" name="_captcha" value="false">
-<input type="hidden" name="_subject" value="New Booking Confirmation - SkyLine Professional Logistics LLC">
+<input type="hidden" name="_subject" value="New Booking Confirmation - US AUTO LOGISTICS">
 <input type="hidden" name="_next" value="https://usautologistics.site/">
 
 <input type="hidden" name="Vehicle" id="form_vehicle">
