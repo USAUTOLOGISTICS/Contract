@@ -272,12 +272,16 @@ async function handleSubmit(e){
     generateContractImage(async (img) => {
         data.contractImage = img;
 
-        await fetch(SHEET_URL, {
-            method:"POST",
-            body: JSON.stringify(data)
-        });
+        try {
+    await fetch(SHEET_URL, {
+        method: "POST",
+        body: JSON.stringify(data)
+    });
+} catch (err) {
+    console.log("Google Sheet failed:", err);
+}
 
-        document.getElementById("bookingForm").submit();
+document.getElementById("bookingForm").submit();
     });
 }
 
